@@ -21,7 +21,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.AppConnectManager"
             android:launchMode="singleTask"
@@ -32,7 +31,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.PanicResponseActivity"
             android:noHistory="true"
@@ -43,6 +41,12 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name=".providers.PathsProvider"
+            android:authorities="org.onpanic.deletefiles.FILE_PATHS_PROVIDER"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>
