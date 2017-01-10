@@ -9,15 +9,18 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import org.onpanic.deletefiles.database.PathsDB;
 
 
 public class PathsProvider extends ContentProvider {
+
     private static final String AUTH = "org.onpanic.deletefiles.FILE_PATHS_PROVIDER";
     public static final Uri CONTENT_URI =
             Uri.parse("content://" + AUTH + "/paths");
+
     //UriMatcher
     private static final int PATHS = 1;
     private static final int PATH_ID = 2;
@@ -41,7 +44,7 @@ public class PathsProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         String where = selection;
         if (uriMatcher.match(uri) == PATH_ID) {
             where = "_id=" + uri.getLastPathSegment();
@@ -55,7 +58,7 @@ public class PathsProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
         int match = uriMatcher.match(uri);
 
         switch (match) {
@@ -70,7 +73,7 @@ public class PathsProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
+    public Uri insert(@NonNull Uri uri, ContentValues values) {
         long regId;
 
         SQLiteDatabase db = pathsDB.getWritableDatabase();
@@ -83,7 +86,7 @@ public class PathsProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
 
         String where = selection;
         if (uriMatcher.match(uri) == PATH_ID) {
@@ -101,7 +104,7 @@ public class PathsProvider extends ContentProvider {
     }
 
     @Override
-    public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+    public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         SQLiteDatabase db = pathsDB.getWritableDatabase();
         Integer rows = db.update(PathsDB.PATHS_TABLE_NAME, values, selection, selectionArgs);
         mContext.getContentResolver().notifyChange(CONTENT_URI, null);

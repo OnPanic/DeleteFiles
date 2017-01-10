@@ -17,14 +17,17 @@ import org.onpanic.deletefiles.constants.DeleteFilesConstants;
 import org.onpanic.deletefiles.fragments.AllFilesLock;
 import org.onpanic.deletefiles.fragments.DeleteFilesSettings;
 import org.onpanic.deletefiles.fragments.LockedByPermissions;
+import org.onpanic.deletefiles.fragments.PathsListFragment;
 import org.onpanic.deletefiles.fragments.TriggerApps;
 import org.onpanic.deletefiles.permissions.PermissionManager;
 
 public class DeleteFilesActivity extends AppCompatActivity implements
-        DeleteFilesSettings.OnTriggerAppsListener {
+        DeleteFilesSettings.OnTriggerAppsListener,
+        PathsListFragment.OnPathListener {
 
     private FragmentManager mFragmentManager;
     private SharedPreferences mPrefs;
+    private Switch deleteAllSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,9 @@ public class DeleteFilesActivity extends AppCompatActivity implements
                         .replace(R.id.fragment_container, new AllFilesLock())
                         .commit();
             } else {
-                // TODO
+                mFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, new PathsListFragment())
+                        .commit();
             }
         }
     }
@@ -61,7 +66,9 @@ public class DeleteFilesActivity extends AppCompatActivity implements
                 FragmentTransaction transaction = mFragmentManager.beginTransaction();
 
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // TODO
+                    mFragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, new PathsListFragment())
+                            .commit();
                 } else {
                     transaction.replace(R.id.fragment_container, new LockedByPermissions());
                 }
@@ -77,22 +84,25 @@ public class DeleteFilesActivity extends AppCompatActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_delete_files, menu);
 
-        MenuItem deleteAll = menu.findItem(R.id.pref_delete_all);
-        Switch actionView = (Switch) deleteAll.getActionView();
-        actionView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        final MenuItem deleteAll = menu.findItem(R.id.pref_delete_all);
+        deleteAllSwitch = (Switch) deleteAll.getActionView();
+        deleteAllSwitch.setChecked(mPrefs.getBoolean(getString(R.string.pref_delete_all), false));
+        deleteAllSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 SharedPreferences.Editor edit = mPrefs.edit();
                 edit.putBoolean(getString(R.string.pref_delete_all), isChecked);
                 edit.apply();
 
+                FragmentTransaction transaction = mFragmentManager.beginTransaction();
+
                 if (isChecked) {
-                    mFragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container, new AllFilesLock())
-                            .commit();
+                    transaction.replace(R.id.fragment_container, new AllFilesLock());
                 } else {
-                    // TODO
+                    transaction.replace(R.id.fragment_container, new PathsListFragment());
                 }
+
+                transaction.commit();
             }
         });
 
@@ -130,5 +140,15 @@ public class DeleteFilesActivity extends AppCompatActivity implements
                 .addToBackStack(null)
                 .replace(R.id.fragment_container, new TriggerApps())
                 .commit();
+    }
+
+    @Override
+    public void onPathListenerCallback(int id) {
+
+    }
+
+    @Override
+    public void onFabClickCallback() {
+
     }
 }
