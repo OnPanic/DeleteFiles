@@ -4,6 +4,12 @@
     tools:context="org.onpanic.deletefiles.DeleteFilesActivity">
 
     <item
+        android:id="@+id/pref_delete_all"
+        android:title=""
+        app:actionLayout="@layout/delete_all_switch_layout"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"

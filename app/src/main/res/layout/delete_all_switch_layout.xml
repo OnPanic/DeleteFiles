@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Switch xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pref_delete_all_switch"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:checked="false"
+    android:switchPadding="15dp"
+    android:text="@string/delete_all_files"
+    android:textColor="@android:color/white"
+    android:textSize="18sp" />
