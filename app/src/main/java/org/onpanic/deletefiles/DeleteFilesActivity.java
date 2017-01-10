@@ -16,6 +16,7 @@ import android.widget.Switch;
 import org.onpanic.deletefiles.constants.DeleteFilesConstants;
 import org.onpanic.deletefiles.fragments.AllFilesLock;
 import org.onpanic.deletefiles.fragments.DeleteFilesSettings;
+import org.onpanic.deletefiles.fragments.FileManagerFragment;
 import org.onpanic.deletefiles.fragments.LockedByPermissions;
 import org.onpanic.deletefiles.fragments.PathsListFragment;
 import org.onpanic.deletefiles.fragments.TriggerApps;
@@ -147,6 +148,9 @@ public class DeleteFilesActivity extends AppCompatActivity implements
 
     @Override
     public void onFabClickCallback() {
-
+        mFragmentManager.beginTransaction()
+                .addToBackStack(null)
+                .replace(R.id.fragment_container, new FileManagerFragment())
+                .commit();
     }
 }
