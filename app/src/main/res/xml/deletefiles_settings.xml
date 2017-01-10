@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:key="@string/pref_trigger_app"
+        android:persistent="false"
+        android:summary="@string/allowed_trigger_app_summary"
+        android:title="@string/allowed_trigger_app" />
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="@string/pref_runned_notification"
+        android:summary="@string/runned_notification_summary"
+        android:title="@string/runned_notification" />
+</PreferenceScreen>
