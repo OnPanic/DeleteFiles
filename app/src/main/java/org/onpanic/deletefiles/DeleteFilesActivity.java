@@ -45,15 +45,15 @@ public class DeleteFilesActivity extends AppCompatActivity implements
         if (PermissionManager.isLollipopOrHigher() && !PermissionManager.hasExternalWritePermission(this)) {
             PermissionManager.requestExternalWritePermissions(this, DeleteFilesConstants.REQUEST_WRITE_STORAGE);
         } else {
+            FragmentTransaction transaction = mFragmentManager.beginTransaction();
+
             if (mPrefs.getBoolean(getString(R.string.pref_delete_all), false)) {
-                mFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, new AllFilesLock())
-                        .commit();
+                transaction.replace(R.id.fragment_container, new AllFilesLock());
             } else {
-                mFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, new PathsListFragment())
-                        .commit();
+                transaction.replace(R.id.fragment_container, new PathsListFragment());
             }
+
+            transaction.commit();
         }
     }
 
@@ -66,9 +66,7 @@ public class DeleteFilesActivity extends AppCompatActivity implements
                 FragmentTransaction transaction = mFragmentManager.beginTransaction();
 
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mFragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container, new PathsListFragment())
-                            .commit();
+                    transaction.replace(R.id.fragment_container, new PathsListFragment());
                 } else {
                     transaction.replace(R.id.fragment_container, new LockedByPermissions());
                 }
