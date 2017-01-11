@@ -13,6 +13,7 @@
     <string name="runned_notification">Notify run complete</string>
     <string name="runned_notification_summary">Shows a notification after a trigger run</string>
     <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 
     <string name="pref_trigger_app" translatable="false">pref_trigger_app</string>
     <string name="pref_runned_notification" translatable="false">pref_runned_notification</string>
