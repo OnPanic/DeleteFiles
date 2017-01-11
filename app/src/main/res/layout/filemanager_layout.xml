@@ -20,7 +20,6 @@
         android:paddingLeft="10dp"
         android:paddingTop="10dp"
         android:scaleType="fitStart"
-        android:text="Button"
         app:srcCompat="?attr/homeAsUpIndicator" />
 
     <Button

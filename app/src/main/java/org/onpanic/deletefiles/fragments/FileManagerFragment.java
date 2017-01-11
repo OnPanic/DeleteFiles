@@ -9,20 +9,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import org.onpanic.deletefiles.R;
-import org.onpanic.deletefiles.adapters.FMItem;
+import org.onpanic.deletefiles.adapters.FMItemsAdapter;
 import org.onpanic.deletefiles.ui.SimpleDividerItemDecoration;
-
-import java.io.File;
 
 import static android.os.Environment.getExternalStorageDirectory;
 
 public class FileManagerFragment extends Fragment {
-    private File prevDir = null;
-    private File currentDir;
     private Context mContext;
     private RecyclerView recyclerView;
+    private FMItemsAdapter adapter;
+    private ImageButton fmBack;
 
     public FileManagerFragment() {
     }
@@ -41,7 +40,15 @@ public class FileManagerFragment extends Fragment {
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(mContext));
         recyclerView.setHasFixedSize(true); // does not change, except in onResume()
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        recyclerView.setAdapter(new FMItem(currentDir.listFiles()));
+        recyclerView.setAdapter(adapter);
+
+        fmBack = (ImageButton) v.findViewById(R.id.fm_back);
+        fmBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adapter.goUp();
+            }
+        });
 
         return v;
     }
@@ -50,6 +57,6 @@ public class FileManagerFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        currentDir = getExternalStorageDirectory();
+        adapter = new FMItemsAdapter(getExternalStorageDirectory());
     }
 }
