@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import org.onpanic.deletefiles.R;
@@ -22,6 +23,8 @@ public class FileManagerFragment extends Fragment {
     private RecyclerView recyclerView;
     private FMItemsAdapter adapter;
     private ImageButton fmBack;
+    private Button fmCancel;
+    private Button fmSave;
 
     public FileManagerFragment() {
     }
@@ -33,7 +36,7 @@ public class FileManagerFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.filemanager_layout, container, false);
 
         recyclerView = (RecyclerView) v.findViewById(R.id.fm_list);
@@ -50,6 +53,22 @@ public class FileManagerFragment extends Fragment {
             }
         });
 
+        fmCancel = (Button) v.findViewById(R.id.fm_cancel);
+        fmCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getFragmentManager().popBackStack();
+            }
+        });
+
+        fmSave = (Button) v.findViewById(R.id.fm_save);
+        fmSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         return v;
     }
 
@@ -58,5 +77,11 @@ public class FileManagerFragment extends Fragment {
         super.onAttach(context);
         mContext = context;
         adapter = new FMItemsAdapter(getExternalStorageDirectory());
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        adapter = null;
     }
 }
