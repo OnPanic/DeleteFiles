@@ -38,6 +38,13 @@ public class FMItemsAdapter extends RecyclerView.Adapter<FMItemsAdapter.ViewHold
     @Override
     public void onBindViewHolder(final FMItemsAdapter.ViewHolder holder, int position) {
         final File current = dirContent[position];
+
+        if (current.isDirectory()) {
+            holder.type.setImageResource(R.drawable.ic_file_folder_open);
+        } else {
+            holder.type.setImageResource(R.drawable.ic_regular_file);
+        }
+
         holder.file = current;
         holder.name.setText(current.getName());
         holder.name.setOnClickListener(new View.OnClickListener() {

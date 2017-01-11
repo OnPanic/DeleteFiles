@@ -58,6 +58,13 @@ public class PathsAdapter extends CursorRecyclerViewAdapter<PathsAdapter.ViewHol
         });
 
         File file = new File(file_name);
+
+        if (file.isDirectory()) {
+            viewHolder.mImage.setImageResource(R.drawable.ic_file_folder_open);
+        } else {
+            viewHolder.mImage.setImageResource(R.drawable.ic_regular_file);
+        }
+
         viewHolder.mName.setText(file.getName());
         viewHolder.mName.setOnClickListener(new View.OnClickListener() {
             @Override
