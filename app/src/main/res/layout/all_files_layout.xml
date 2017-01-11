@@ -12,7 +12,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:paddingBottom="75dp"
-        app:srcCompat="@drawable/ic_ripple_trigger_no_shadow" />
+        app:srcCompat="@drawable/ic_deletefiles" />
 
     <TextView
         android:layout_width="wrap_content"
