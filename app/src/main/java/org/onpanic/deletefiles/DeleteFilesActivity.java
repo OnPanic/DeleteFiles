@@ -2,6 +2,8 @@ package org.onpanic.deletefiles;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -21,10 +23,14 @@ import org.onpanic.deletefiles.fragments.LockedByPermissions;
 import org.onpanic.deletefiles.fragments.PathsListFragment;
 import org.onpanic.deletefiles.fragments.TriggerApps;
 import org.onpanic.deletefiles.permissions.PermissionManager;
+import org.onpanic.deletefiles.providers.PathsProvider;
+
+import java.util.ArrayList;
 
 public class DeleteFilesActivity extends AppCompatActivity implements
         DeleteFilesSettings.OnTriggerAppsListener,
-        PathsListFragment.OnPathListener {
+        PathsListFragment.OnPathListener,
+        FileManagerFragment.OnSavePaths {
 
     private FragmentManager mFragmentManager;
     private SharedPreferences mPrefs;
@@ -152,5 +158,16 @@ public class DeleteFilesActivity extends AppCompatActivity implements
                 .addToBackStack(null)
                 .replace(R.id.fragment_container, new FileManagerFragment())
                 .commit();
+    }
+
+    @Override
+    public void save(ArrayList<String> files) {
+        mFragmentManager.popBackStack();
+        ContentResolver cr = getContentResolver();
+        for (String file : files) {
+            ContentValues values = new ContentValues();
+            values.put(PathsProvider.Path.PATH, file);
+            cr.insert(PathsProvider.CONTENT_URI, values);
+        }
     }
 }

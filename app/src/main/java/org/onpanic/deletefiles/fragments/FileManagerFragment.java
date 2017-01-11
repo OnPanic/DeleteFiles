@@ -16,6 +16,8 @@ import org.onpanic.deletefiles.R;
 import org.onpanic.deletefiles.adapters.FMItemsAdapter;
 import org.onpanic.deletefiles.ui.SimpleDividerItemDecoration;
 
+import java.util.ArrayList;
+
 import static android.os.Environment.getExternalStorageDirectory;
 
 public class FileManagerFragment extends Fragment {
@@ -25,6 +27,7 @@ public class FileManagerFragment extends Fragment {
     private ImageButton fmBack;
     private Button fmCancel;
     private Button fmSave;
+    private OnSavePaths mListener;
 
     public FileManagerFragment() {
     }
@@ -65,7 +68,7 @@ public class FileManagerFragment extends Fragment {
         fmSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                mListener.save(adapter.getSelectedFiles());
             }
         });
 
@@ -77,11 +80,23 @@ public class FileManagerFragment extends Fragment {
         super.onAttach(context);
         mContext = context;
         adapter = new FMItemsAdapter(getExternalStorageDirectory());
+
+        if (context instanceof OnSavePaths) {
+            mListener = (OnSavePaths) mContext;
+        } else {
+            throw new RuntimeException(mContext.toString()
+                    + " must implement OnSavePaths");
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         adapter = null;
+        mListener = null;
+    }
+
+    public interface OnSavePaths {
+        void save(ArrayList<String> files);
     }
 }

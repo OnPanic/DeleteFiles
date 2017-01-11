@@ -17,6 +17,8 @@ import org.onpanic.deletefiles.R;
 import org.onpanic.deletefiles.fragments.PathsListFragment;
 import org.onpanic.deletefiles.providers.PathsProvider;
 
+import java.io.File;
+
 
 public class PathsAdapter extends CursorRecyclerViewAdapter<PathsAdapter.ViewHolder> {
 
@@ -39,7 +41,7 @@ public class PathsAdapter extends CursorRecyclerViewAdapter<PathsAdapter.ViewHol
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, Cursor cursor) {
         final int id = cursor.getInt(cursor.getColumnIndex(PathsProvider.Path._ID));
-        final String contact_name = cursor.getString(cursor.getColumnIndex(PathsProvider.Path.PATH));
+        final String file_name = cursor.getString(cursor.getColumnIndex(PathsProvider.Path.PATH));
         final Boolean active = (cursor.getInt(cursor.getColumnIndex(PathsProvider.Path.ENABLED)) == 1);
 
         viewHolder.mActive.setChecked(active);
@@ -55,7 +57,8 @@ public class PathsAdapter extends CursorRecyclerViewAdapter<PathsAdapter.ViewHol
             }
         });
 
-        viewHolder.mName.setText(contact_name);
+        File file = new File(file_name);
+        viewHolder.mName.setText(file.getName());
         viewHolder.mName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
