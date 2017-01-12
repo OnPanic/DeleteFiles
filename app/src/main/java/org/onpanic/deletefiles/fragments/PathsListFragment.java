@@ -46,7 +46,6 @@ public class PathsListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_paths_list, container, false);
-        RecyclerView list = (RecyclerView) view.findViewById(R.id.contact_list);
 
         mFab = (FloatingActionButton) view.findViewById(R.id.fab);
 
@@ -92,6 +91,7 @@ public class PathsListFragment extends Fragment {
 
         mContentResolver.registerContentObserver(PathsProvider.CONTENT_URI, true, mPathsObserver);
 
+        RecyclerView list = (RecyclerView) view.findViewById(R.id.contact_list);
         list.setLayoutManager(new LinearLayoutManager(view.getContext()));
         list.setAdapter(mPaths);
 
