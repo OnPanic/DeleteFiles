@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Delete Files</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="activate">Activar</string>
+    <string name="all_files_will_be_deleted">Se eliminarán todos los archivos</string>
+    <string name="allowed_trigger_app">Aplicación de activación permitida</string>
+    <string name="cancel">Cancelar</string>
+    <string name="allowed_trigger_app_summary">Selecciona qué aplicación está autorizada para enviar alertas de pánico</string>
+    <string name="confirm_deletion">Confirm deletion</string>
+    <string name="delete">Borrar</string>
+    <string name="delete_all_files">Eliminar todos</string>
+    <string name="disable">Inhabilitar</string>
+    <string name="none">Ninguna</string>
+    <string name="please_grant_permissions_for_external_storage">Por favor, concede permisos para almacenamiento externo</string>
+    <string name="runned_notification">Notificar ejecución completada</string>
+    <string name="runned_notification_content">Espero que estés bien :)</string>
+    <string name="runned_notification_summary">Muestra una notificación después de un disparo</string>
+    <string name="runned_notification_title">Archivos eliminados</string>
+    <string name="save">Guardar</string>
+</resources>
