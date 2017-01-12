@@ -29,6 +29,7 @@ public class DeleteFilesActivity extends AppCompatActivity implements
         FileManagerFragment.OnSavePaths {
 
     private FragmentManager mFragmentManager;
+    private MenuItem settingsIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,7 @@ public class DeleteFilesActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_delete_files, menu);
+        settingsIcon = menu.findItem(R.id.action_settings);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -96,11 +98,16 @@ public class DeleteFilesActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        if (mFragmentManager.getBackStackEntryCount() == 0) {
-            super.onBackPressed();
-        } else {
-            mFragmentManager.popBackStack();
+        switch (mFragmentManager.getBackStackEntryCount()) {
+            case 0:
+                super.onBackPressed();
+                return;
+            case 1:
+                settingsIcon.setVisible(true);
+                break;
         }
+
+        mFragmentManager.popBackStack();
     }
 
     @Override
