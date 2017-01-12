@@ -63,6 +63,14 @@ public class PathsListFragment extends Fragment {
                             SharedPreferences.Editor edit = preferences.edit();
                             edit.putBoolean(mContext.getString(R.string.pref_delete_all), false);
                             edit.apply();
+
+                            mFab.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    mListener.onFabClickCallback();
+                                }
+                            });
+
                             mFab.show();
                         }
                     }).show();
