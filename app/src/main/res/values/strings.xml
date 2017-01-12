@@ -15,6 +15,8 @@
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="disable">Disable</string>
+    <string name="delete">Delete</string>
+    <string name="confirm_deletion">Confirm deletion</string>
 
     <string name="pref_trigger_app" translatable="false">pref_trigger_app</string>
     <string name="pref_runned_notification" translatable="false">pref_runned_notification</string>

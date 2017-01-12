@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import org.onpanic.deletefiles.constants.DeleteFilesConstants;
+import org.onpanic.deletefiles.dialogs.DeleteFMItemDialog;
 import org.onpanic.deletefiles.fragments.DeleteFilesSettings;
 import org.onpanic.deletefiles.fragments.FileManagerFragment;
 import org.onpanic.deletefiles.fragments.LockedByPermissions;
@@ -112,7 +113,11 @@ public class DeleteFilesActivity extends AppCompatActivity implements
 
     @Override
     public void onPathListenerCallback(int id) {
-
+        DeleteFMItemDialog dialog = new DeleteFMItemDialog();
+        Bundle arguments = new Bundle();
+        arguments.putInt(PathsProvider.Path._ID, id);
+        dialog.setArguments(arguments);
+        dialog.show(getSupportFragmentManager(), "DeleteFMItemDialog");
     }
 
     @Override
