@@ -47,6 +47,12 @@
             android:authorities="org.onpanic.deletefiles.FILE_PATHS_PROVIDER"
             android:enabled="true"
             android:exported="false" />
+
+        <service
+            android:name=".services.DeleteFilesService"
+            android:enabled="true"
+            android:exported="false" />
+
     </application>
 
 </manifest>
