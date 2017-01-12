@@ -4,19 +4,14 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.CompoundButton;
-import android.widget.Switch;
 
 import org.onpanic.deletefiles.constants.DeleteFilesConstants;
-import org.onpanic.deletefiles.fragments.AllFilesLock;
 import org.onpanic.deletefiles.fragments.DeleteFilesSettings;
 import org.onpanic.deletefiles.fragments.FileManagerFragment;
 import org.onpanic.deletefiles.fragments.LockedByPermissions;
@@ -33,8 +28,6 @@ public class DeleteFilesActivity extends AppCompatActivity implements
         FileManagerFragment.OnSavePaths {
 
     private FragmentManager mFragmentManager;
-    private SharedPreferences mPrefs;
-    private Switch deleteAllSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +37,6 @@ public class DeleteFilesActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
 
         mFragmentManager = getFragmentManager();
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Do not overlapping fragments.
         if (savedInstanceState != null) return;
@@ -52,15 +44,9 @@ public class DeleteFilesActivity extends AppCompatActivity implements
         if (PermissionManager.isLollipopOrHigher() && !PermissionManager.hasExternalWritePermission(this)) {
             PermissionManager.requestExternalWritePermissions(this, DeleteFilesConstants.REQUEST_WRITE_STORAGE);
         } else {
-            FragmentTransaction transaction = mFragmentManager.beginTransaction();
-
-            if (mPrefs.getBoolean(getString(R.string.pref_delete_all), false)) {
-                transaction.replace(R.id.fragment_container, new AllFilesLock());
-            } else {
-                transaction.replace(R.id.fragment_container, new PathsListFragment());
-            }
-
-            transaction.commit();
+            mFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, new PathsListFragment())
+                    .commit();
         }
     }
 
@@ -88,29 +74,6 @@ public class DeleteFilesActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_delete_files, menu);
-
-        final MenuItem deleteAll = menu.findItem(R.id.pref_delete_all);
-        deleteAllSwitch = (Switch) deleteAll.getActionView();
-        deleteAllSwitch.setChecked(mPrefs.getBoolean(getString(R.string.pref_delete_all), false));
-        deleteAllSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SharedPreferences.Editor edit = mPrefs.edit();
-                edit.putBoolean(getString(R.string.pref_delete_all), isChecked);
-                edit.apply();
-
-                FragmentTransaction transaction = mFragmentManager.beginTransaction();
-
-                if (isChecked) {
-                    transaction.replace(R.id.fragment_container, new AllFilesLock());
-                } else {
-                    transaction.replace(R.id.fragment_container, new PathsListFragment());
-                }
-
-                transaction.commit();
-            }
-        });
-
         return super.onCreateOptionsMenu(menu);
     }
 

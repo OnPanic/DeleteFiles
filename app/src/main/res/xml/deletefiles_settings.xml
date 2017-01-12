@@ -11,4 +11,10 @@
         android:key="@string/pref_runned_notification"
         android:summary="@string/runned_notification_summary"
         android:title="@string/runned_notification" />
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="@string/pref_delete_all"
+        android:summary="@string/all_files_will_be_deleted"
+        android:title="@string/delete_all_files" />
 </PreferenceScreen>

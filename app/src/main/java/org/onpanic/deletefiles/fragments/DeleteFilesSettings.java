@@ -9,7 +9,6 @@ import org.onpanic.deletefiles.R;
 
 
 public class DeleteFilesSettings extends PreferenceFragment {
-    private Context mContext;
     private OnTriggerAppsListener mListener;
 
     public DeleteFilesSettings() {
