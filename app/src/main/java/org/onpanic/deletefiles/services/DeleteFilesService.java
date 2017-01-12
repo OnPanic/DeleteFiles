@@ -3,10 +3,14 @@ package org.onpanic.deletefiles.services;
 import android.app.Service;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 
+import org.onpanic.deletefiles.R;
 import org.onpanic.deletefiles.constants.DeleteFilesConstants;
+import org.onpanic.deletefiles.notifications.TriggerNotification;
 import org.onpanic.deletefiles.providers.PathsProvider;
 
 import java.io.File;
@@ -49,6 +53,13 @@ public class DeleteFilesService extends Service {
                     }
 
                     files.close();
+
+                    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    if (prefs.getBoolean(getString(R.string.pref_runned_notification), false)) {
+                        TriggerNotification notification = new TriggerNotification(getApplicationContext());
+                        notification.show();
+                    }
+
                     stopSelf(startId);
                 }
             }).start();
