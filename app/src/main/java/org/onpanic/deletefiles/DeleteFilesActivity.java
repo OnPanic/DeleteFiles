@@ -85,12 +85,12 @@ public class DeleteFilesActivity extends AppCompatActivity implements
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
+            settingsIcon.setVisible(false);
+
             mFragmentManager.beginTransaction()
                     .addToBackStack(null)
                     .replace(R.id.fragment_container, new DeleteFilesSettings())
                     .commit();
-
-            return true;
         }
 
         return super.onOptionsItemSelected(item);
