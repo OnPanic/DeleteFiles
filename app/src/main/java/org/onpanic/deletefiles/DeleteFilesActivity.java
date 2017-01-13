@@ -116,6 +116,7 @@ public class DeleteFilesActivity extends AppCompatActivity implements
                 break;
             case 1:
                 settingsIcon.setVisible(true);
+                mFragmentManager.popBackStack();
                 initFragment();
                 break;
             default:
