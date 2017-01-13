@@ -4,8 +4,10 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -13,6 +15,7 @@ import android.view.MenuItem;
 
 import org.onpanic.deletefiles.constants.DeleteFilesConstants;
 import org.onpanic.deletefiles.dialogs.DeleteFMItemDialog;
+import org.onpanic.deletefiles.fragments.AllFilesFragment;
 import org.onpanic.deletefiles.fragments.DeleteFilesSettings;
 import org.onpanic.deletefiles.fragments.FileManagerFragment;
 import org.onpanic.deletefiles.fragments.LockedByPermissions;
@@ -26,7 +29,8 @@ import java.util.ArrayList;
 public class DeleteFilesActivity extends AppCompatActivity implements
         DeleteFilesSettings.OnTriggerAppsListener,
         PathsListFragment.OnPathListener,
-        FileManagerFragment.OnSavePaths {
+        FileManagerFragment.OnSavePaths,
+        AllFilesFragment.OnAllFilesDisable {
 
     private FragmentManager mFragmentManager;
     private MenuItem settingsIcon;
@@ -46,9 +50,7 @@ public class DeleteFilesActivity extends AppCompatActivity implements
         if (PermissionManager.isLollipopOrHigher() && !PermissionManager.hasExternalWritePermission(this)) {
             PermissionManager.requestExternalWritePermissions(this, DeleteFilesConstants.REQUEST_WRITE_STORAGE);
         } else {
-            mFragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, new PathsListFragment())
-                    .commit();
+            initFragment();
         }
     }
 
@@ -58,19 +60,29 @@ public class DeleteFilesActivity extends AppCompatActivity implements
 
         switch (requestCode) {
             case DeleteFilesConstants.REQUEST_WRITE_STORAGE: {
-                FragmentTransaction transaction = mFragmentManager.beginTransaction();
-
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    transaction.replace(R.id.fragment_container, new PathsListFragment());
+                    initFragment();
                 } else {
-                    transaction.replace(R.id.fragment_container, new LockedByPermissions());
+                    mFragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, new LockedByPermissions())
+                            .commit();
                 }
-
-                transaction.commit();
-
                 break;
             }
         }
+    }
+
+    private void initFragment() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        FragmentTransaction transaction = mFragmentManager.beginTransaction();
+
+        if (preferences.getBoolean(getString(R.string.pref_delete_all), false)) {
+            transaction.replace(R.id.fragment_container, new AllFilesFragment());
+        } else {
+            transaction.replace(R.id.fragment_container, new PathsListFragment());
+        }
+
+        transaction.commit();
     }
 
     @Override
@@ -101,13 +113,14 @@ public class DeleteFilesActivity extends AppCompatActivity implements
         switch (mFragmentManager.getBackStackEntryCount()) {
             case 0:
                 super.onBackPressed();
-                return;
+                break;
             case 1:
                 settingsIcon.setVisible(true);
+                initFragment();
                 break;
+            default:
+                mFragmentManager.popBackStack();
         }
-
-        mFragmentManager.popBackStack();
     }
 
     @Override
@@ -144,5 +157,12 @@ public class DeleteFilesActivity extends AppCompatActivity implements
             values.put(PathsProvider.Path.PATH, file);
             cr.insert(PathsProvider.CONTENT_URI, values);
         }
+    }
+
+    @Override
+    public void allFilesDisable() {
+        mFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, new PathsListFragment())
+                .commit();
     }
 }

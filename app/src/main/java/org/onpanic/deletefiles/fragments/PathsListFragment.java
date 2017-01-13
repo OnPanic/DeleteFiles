@@ -3,13 +3,10 @@ package org.onpanic.deletefiles.fragments;
 import android.app.Fragment;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -48,39 +45,12 @@ public class PathsListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_paths_list, container, false);
 
         mFab = (FloatingActionButton) view.findViewById(R.id.fab);
-
-        final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-
-        if (preferences.getBoolean(mContext.getString(R.string.pref_delete_all), false)) {
-            mFab.hide();
-            Snackbar.make(getActivity().findViewById(android.R.id.content),
-                    R.string.all_files_will_be_deleted,
-                    Snackbar.LENGTH_INDEFINITE).setAction(R.string.disable,
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            SharedPreferences.Editor edit = preferences.edit();
-                            edit.putBoolean(mContext.getString(R.string.pref_delete_all), false);
-                            edit.apply();
-
-                            mFab.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    mListener.onFabClickCallback();
-                                }
-                            });
-
-                            mFab.show();
-                        }
-                    }).show();
-        } else {
-            mFab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mListener.onFabClickCallback();
-                }
-            });
-        }
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mListener.onFabClickCallback();
+            }
+        });
 
         mPaths = new PathsAdapter(
                 mContext,
