@@ -82,6 +82,7 @@ public class FMItemsAdapter extends RecyclerView.Adapter<FMItemsAdapter.ViewHold
     public void goUp() {
         if (prevDir.size() >= 1) {
             File dir = prevDir.remove(prevDir.size() - 1);
+            currentDir = dir;
             dirContent = dir.listFiles();
             notifyDataSetChanged();
         }
