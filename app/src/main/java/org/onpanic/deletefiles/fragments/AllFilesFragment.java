@@ -15,7 +15,6 @@ import org.onpanic.deletefiles.R;
 
 public class AllFilesFragment extends Fragment {
     private Context mContext;
-    private OnAllFilesDisable mListener;
 
     public AllFilesFragment() {
     }
@@ -35,7 +34,9 @@ public class AllFilesFragment extends Fragment {
                         SharedPreferences.Editor edit = preferences.edit();
                         edit.putBoolean(mContext.getString(R.string.pref_delete_all), false);
                         edit.apply();
-                        mListener.allFilesDisable();
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_container, new PathsListFragment())
+                                .commit();
                     }
                 }).show();
 
@@ -46,15 +47,5 @@ public class AllFilesFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        if (context instanceof OnAllFilesDisable) {
-            mListener = (OnAllFilesDisable) mContext;
-        } else {
-            throw new RuntimeException(mContext.toString()
-                    + " must implement OnAllFilesDisable");
-        }
-    }
-
-    public interface OnAllFilesDisable {
-        void allFilesDisable();
     }
 }

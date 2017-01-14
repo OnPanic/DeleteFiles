@@ -1,6 +1,5 @@
 package org.onpanic.deletefiles.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -9,7 +8,6 @@ import org.onpanic.deletefiles.R;
 
 
 public class DeleteFilesSettings extends PreferenceFragment {
-    private OnTriggerAppsListener mListener;
 
     public DeleteFilesSettings() {
         // Required empty public constructor
@@ -24,30 +22,14 @@ public class DeleteFilesSettings extends PreferenceFragment {
         triggerApp.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                mListener.onTriggerAppsCallback();
+                getFragmentManager()
+                        .beginTransaction()
+                        .addToBackStack(null)
+                        .replace(R.id.fragment_container, new TriggerApps())
+                        .commit();
+
                 return false;
             }
         });
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnTriggerAppsListener) {
-            mListener = (OnTriggerAppsListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnPathListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnTriggerAppsListener {
-        void onTriggerAppsCallback();
     }
 }

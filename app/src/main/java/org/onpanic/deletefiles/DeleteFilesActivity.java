@@ -20,17 +20,14 @@ import org.onpanic.deletefiles.fragments.DeleteFilesSettings;
 import org.onpanic.deletefiles.fragments.FileManagerFragment;
 import org.onpanic.deletefiles.fragments.LockedByPermissions;
 import org.onpanic.deletefiles.fragments.PathsListFragment;
-import org.onpanic.deletefiles.fragments.TriggerApps;
 import org.onpanic.deletefiles.permissions.PermissionManager;
 import org.onpanic.deletefiles.providers.PathsProvider;
 
 import java.util.ArrayList;
 
 public class DeleteFilesActivity extends AppCompatActivity implements
-        DeleteFilesSettings.OnTriggerAppsListener,
         PathsListFragment.OnPathListener,
-        FileManagerFragment.OnSavePaths,
-        AllFilesFragment.OnAllFilesDisable {
+        FileManagerFragment.OnSavePaths {
 
     private FragmentManager mFragmentManager;
     private MenuItem settingsIcon;
@@ -125,28 +122,12 @@ public class DeleteFilesActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onTriggerAppsCallback() {
-        mFragmentManager.beginTransaction()
-                .addToBackStack(null)
-                .replace(R.id.fragment_container, new TriggerApps())
-                .commit();
-    }
-
-    @Override
     public void onPathListenerCallback(int id) {
         DeleteFMItemDialog dialog = new DeleteFMItemDialog();
         Bundle arguments = new Bundle();
         arguments.putInt(PathsProvider.Path._ID, id);
         dialog.setArguments(arguments);
         dialog.show(getSupportFragmentManager(), "DeleteFMItemDialog");
-    }
-
-    @Override
-    public void onFabClickCallback() {
-        mFragmentManager.beginTransaction()
-                .addToBackStack(null)
-                .replace(R.id.fragment_container, new FileManagerFragment())
-                .commit();
     }
 
     @Override
@@ -158,12 +139,5 @@ public class DeleteFilesActivity extends AppCompatActivity implements
             values.put(PathsProvider.Path.PATH, file);
             cr.insert(PathsProvider.CONTENT_URI, values);
         }
-    }
-
-    @Override
-    public void allFilesDisable() {
-        mFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, new PathsListFragment())
-                .commit();
     }
 }

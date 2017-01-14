@@ -48,7 +48,11 @@ public class PathsListFragment extends Fragment {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onFabClickCallback();
+                getFragmentManager()
+                        .beginTransaction()
+                        .addToBackStack(null)
+                        .replace(R.id.fragment_container, new FileManagerFragment())
+                        .commit();
             }
         });
 
@@ -92,8 +96,6 @@ public class PathsListFragment extends Fragment {
 
     public interface OnPathListener {
         void onPathListenerCallback(int id);
-
-        void onFabClickCallback();
     }
 
     class PathsObserver extends ContentObserver {
