@@ -2,6 +2,7 @@ package org.onpanic.deletefiles.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import org.onpanic.deletefiles.constants.DeleteFilesConstants;
@@ -21,6 +22,10 @@ public class PanicResponseActivity extends Activity {
             startService(intent);
         }
 
-        finish();
+        if (Build.VERSION.SDK_INT >= 21) {
+            finishAndRemoveTask();
+        } else {
+            finish();
+        }
     }
 }
