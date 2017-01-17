@@ -60,6 +60,8 @@ public class DeleteFilesActivity extends AppCompatActivity implements
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     initFragment();
                 } else {
+                    // Request rationale
+                    PermissionManager.requestExternalWritePermissions(this, DeleteFilesConstants.REQUEST_WRITE_STORAGE);
                     mFragmentManager.beginTransaction()
                             .replace(R.id.fragment_container, new LockedByPermissions())
                             .commit();
