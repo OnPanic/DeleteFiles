@@ -2,7 +2,7 @@
     <string name="app_name">Delete Files</string>
     <string name="action_settings">Settings</string>
     <string name="please_grant_permissions_for_external_storage">Please grant permissions for external storage</string>
-    <string name="activate">Activate</string>
+    <string name="grant">Grant</string>
     <string name="delete_all_files">Delete All</string>
     <string name="all_files_will_be_deleted">All files will be deleted</string>
     <string name="runned_notification_content">Hope you are ok :)</string>

@@ -34,7 +34,7 @@ public class PermissionManager {
                 (mActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             Snackbar.make(mActivity.findViewById(android.R.id.content),
                     R.string.please_grant_permissions_for_external_storage,
-                    Snackbar.LENGTH_INDEFINITE).setAction(R.string.activate,
+                    Snackbar.LENGTH_INDEFINITE).setAction(R.string.grant,
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
